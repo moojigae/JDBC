@@ -59,4 +59,32 @@ public class MemberController {
 		
 	}
 	
+	public void updateMember() {
+		Member member = menu.updateMember();
+		
+		
+		
+	}
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

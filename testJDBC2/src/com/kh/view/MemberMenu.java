@@ -17,7 +17,7 @@ public class MemberMenu {
 		System.out.println("1. 새 회원 등록");
 		System.out.println("2. 모든 회원 조회");
 		System.out.println("3. 특정 조건 회원 조회");
-		System.out.println("4. 회원 정보 조회");
+		System.out.println("4. 회원 정보 수정");
 		System.out.println("5. 회원 탈퇴");
 		System.out.println("0. 프로그램 종료");
 		System.out.println("번호 선택 : ");
@@ -75,10 +75,10 @@ public class MemberMenu {
 	}
 
 	public void displayMember(ArrayList<Member> mList) {
-		System.out.printf("%-10s %-10s %-5s %-20s %-15s %-4s -%20s -%15s\n",
+		System.out.printf("%-10s %-10s %-10s %-15s %-20s %-4s -%20s -%15s\n",
 				"ID","PWD","NAME","GENDER","EMAIL","PHONE","AGE","ADDRESS","ENROLLDATE");
 		for(Member m : mList) {
-			System.out.printf("%-10s %-10s %-5s %-20s %-15s %-4s -%20s -%15s\n",
+			System.out.printf("%-10s %-10s %-11s %-10s %-20s %-4s -%20s -%15s\n",
 								m.getMemberId(), m.getMemberPwd(), m.getMemberName(),
 								m.getGender(), m.getEmail(), m.getPhone(), m.getAge(),
 								m.getAddress(), m.getEnrollDate());
@@ -113,4 +113,30 @@ public class MemberMenu {
 		char gen = sc.nextLine().toUpperCase().charAt(0);
 		return gen;
 	}
+	
+	public Member updateMember() {
+		System.out.println("수정할 정보를 입력하세요.");
+		System.out.println("아이디 : ");
+		String id = sc.nextLine();
+		System.out.println("비밀번호 : ");
+		String password = sc.nextLine();
+		System.out.println("이름 : ");
+		String name = sc.nextLine();
+		System.out.println("성별(남: M / 여: F) : ");
+		char gender = sc.nextLine().toUpperCase().charAt(0);
+		System.out.println("이메일 : ");
+		String email = sc.nextLine();
+		System.out.println("휴대폰 번호 : ");
+		String phone = sc.nextLine();
+		System.out.println("나이 : ");
+		int age = Integer.parseInt(sc.nextLine());
+		System.out.println("주소 : ");
+		String address = sc.nextLine();
+		
+		Member member = new Member(id, password, name, gender, email, phone, age, address);
+		
+		return member;
+	}
+	
+	
 }
