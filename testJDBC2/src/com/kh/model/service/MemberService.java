@@ -13,6 +13,9 @@ import com.kh.model.vo.Member;
 
 public class MemberService {
 // controller와 dao사이에 있음 
+// DB와 연결하는 커넥션 역할
+// 트랜잭션 관리
+// 자원 반납
 
 	public int insertMember(Member member) {
 		Connection conn = getConnection();
@@ -56,5 +59,44 @@ public class MemberService {
 		
 		return mList;
 		
+	}
+
+	public int checkMember(String memberId) {
+		Connection conn = getConnection();
+		
+		MemberDAO mDAO = new MemberDAO();
+		int check = mDAO.checkMember(conn,memberId); // DAO가 conn을 이용하도록 매개변수로 보냄
+		
+		return check;
+		
+	}
+
+	public int updateMember(String memberId, int sel, String input) {
+		Connection conn = getConnection();
+		MemberDAO mDAO = new MemberDAO();
+		
+		int result = mDAO.updateMember(conn, memberId, sel, input);
+		
+		if(result>0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		return result;
+	}
+
+	public int deleteMember(String memberId) {
+		Connection conn = getConnection();
+		MemberDAO mDAO = new MemberDAO();
+		
+		int result = mDAO.deleteMember(conn, memberId);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		return result;
 	}
 }

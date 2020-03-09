@@ -189,4 +189,92 @@ public class MemberDAO {
 		}
 		return mList;
 	}
+
+	public int checkMember(Connection conn, String memberId) {
+//		ID가 있는지 없는지 확인
+//		select ~~ from member where member_id = ?
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int check = 0;
+		
+		String query = prop.getProperty("checkMember");
+//		checkMember=SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = ?  결과가 1이나 0이 나와야 함
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			
+			rset = pstmt.executeQuery();  // select 하면 무조건 rset 존재하고 executeQuery()로 보내야 함
+//			1개 or 0개
+			if(rset.next()) {
+				check = rset.getInt(1); // select한 첫번째 컬럼의 결과값을 check에 넣어줌
+//				getInt String 컬럼명 or int 컬럼 인덱스를 매개변수로 넣을 수 있음
+//				컬럼 인덱스를 넣을 경우 DB는 1부터 순서가 시작되고 정확하게 순서를 모를 경우 사용하기 어려움. 웬만하면 컬럼명을 사용하는 것이 좋음
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return check; // select * 로 해서 member로 return해도 무관
+	}
+
+	public int updateMember(Connection conn, String memberId, int sel, String input) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateMember" + sel);	// sel번호에 따라 쿼리 결정
+//		비밀번호 : updateMember1
+//		email : updateMember2
+//		phone : updateMember3
+//		address : updateMember4
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, input);
+			pstmt.setString(2, memberId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int deleteMember(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteMember");
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
